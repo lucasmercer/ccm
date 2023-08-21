@@ -80,7 +80,10 @@ function Certificate() {
       case 'template1':
         templateURL = 'template.pdf'
         break
-      // Você pode adicionar mais cases quando tiver outros templates
+        case 'template2':
+          templateURL = 'template2.pdf'
+          break
+      //  adicionar mais cases quando tiver outros templates
       default:
         templateURL = 'template.pdf'
         break
@@ -290,6 +293,7 @@ function Certificate() {
             onChange={(e) => setTemplate(e.target.value)}
           >
             <MenuItem value='template1'>Template 1</MenuItem>
+            <MenuItem value='template2'>Template 2</MenuItem>
             {/* Você pode adicionar mais templates aqui no futuro */}
           </Select>
         </Grid>
