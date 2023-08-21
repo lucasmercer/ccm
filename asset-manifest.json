@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/ccm/static/css/main.e6c13ad2.css",
+    "main.js": "/ccm/static/js/main.3caea54c.js",
+    "static/js/787.9e89cdee.chunk.js": "/ccm/static/js/787.9e89cdee.chunk.js",
+    "static/media/colegio_bg.jpg": "/ccm/static/media/colegio_bg.2ed258933892266e5845.jpg",
+    "index.html": "/ccm/index.html",
+    "main.e6c13ad2.css.map": "/ccm/static/css/main.e6c13ad2.css.map",
+    "main.3caea54c.js.map": "/ccm/static/js/main.3caea54c.js.map",
+    "787.9e89cdee.chunk.js.map": "/ccm/static/js/787.9e89cdee.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.3caea54c.js"
+  ]
+}
