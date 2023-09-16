@@ -38,13 +38,13 @@ function Certificate() {
   const [isRendering, setIsRendering] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [previewName, setPreviewName] = useState("");
-  const [template, setTemplate] = useState("template1"); // Valor padrão
+  const [template, setTemplate] = useState("template1");
 
   const templates = [
     { name: "Template 1", value: "template1" },
     { name: "Template 2", value: "template2" },
-    { name: "Template 3", value: "template3" }, // Alterado de 'newTemplate1' para 'template3'
-    { name: "Template 4", value: "template4" }, // Alterado de 'newTemplate2' para 'template4'
+    { name: "Template 3", value: "template3" },
+    { name: "Template 4", value: "template4" },
   ];
 
   let savedPDFBytes = null;
@@ -90,14 +90,14 @@ function Certificate() {
       case "template2":
         templateURL = "template2.pdf";
         break;
-      case "template3": // Alterado de 'newTemplate1' para 'template3'
+      case "template3":
         templateURL = "template3.pdf";
         break;
-      case "template4": // Alterado de 'newTemplate2' para 'template4'
+      case "template4":
         templateURL = "template4.pdf";
         break;
       default:
-        templateURL = "template1.pdf"; // Template padrão
+        templateURL = "template1.pdf";
     }
 
     const formatDateToBrazilian = (date) => {
@@ -122,7 +122,7 @@ function Certificate() {
 
     const adjustFontSizeForName = (studentName, font, initialSize) => {
       let adjustedSize = initialSize;
-      const maxWidth = 400; // Ajuste conforme necessário
+      const maxWidth = 400;
       let textWidth = font.widthOfTextAtSize(studentName, adjustedSize);
 
       while (textWidth > maxWidth && adjustedSize > 10) {
@@ -228,6 +228,8 @@ function Certificate() {
     setIsRendering(false);
   };
 
+  const isDateRequired = template !== "template3";
+
   return (
     <div style={{ padding: "20px" }}>
       <Grid container spacing={3}>
@@ -243,13 +245,15 @@ function Certificate() {
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            label="Data"
-            type="date"
-            fullWidth
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          {isDateRequired && (
+            <TextField
+              label="Data"
+              type="date"
+              fullWidth
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          )}
         </Grid>
         <Grid item xs={12}>
           <TextareaAutosize
@@ -298,9 +302,9 @@ function Certificate() {
             value={template}
             onChange={(e) => setTemplate(e.target.value)}
           >
-            {templates.map((template) => (
-              <MenuItem key={template.value} value={template.value}>
-                {template.name}
+            {templates.map((templateOption) => (
+              <MenuItem key={templateOption.value} value={templateOption.value}>
+                {templateOption.name}
               </MenuItem>
             ))}
           </Select>
