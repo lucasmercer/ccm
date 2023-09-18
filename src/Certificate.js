@@ -77,10 +77,10 @@ function Certificate() {
   const generatePDFForStudent = async (studentName) => {
     let templateURL;
     switch (template) {
-      case "template1":
+      case "TemplateLucas":
         templateURL = "template.pdf";
         break;
-      case "template2":
+      case "TemplateSeed":
         templateURL = "template2.pdf";
         break;
       //  adicionar mais cases quando tiver outros templates
@@ -292,8 +292,8 @@ function Certificate() {
             value={template}
             onChange={(e) => setTemplate(e.target.value)}
           >
-            <MenuItem value="template1">Template 1</MenuItem>
-            <MenuItem value="template2">Template 2</MenuItem>
+            <MenuItem value="TemplateLucas">Padrão Lucas</MenuItem>
+            <MenuItem value="TemplateSeed">Padrão Seed</MenuItem>
             {/* Você pode adicionar mais templates aqui no futuro */}
           </Select>
         </Grid>
