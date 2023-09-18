@@ -39,7 +39,7 @@ function Certificate() {
   const [openModal, setOpenModal] = useState(false);
   const [previewName, setPreviewName] = useState("");
 
-  const [template, setTemplate] = useState("template1");
+  const [template, setTemplate] = useState("TemplateLucas"); // Definindo "Padrão Lucas" como padrão
 
   let savedPDFBytes = null;
 
