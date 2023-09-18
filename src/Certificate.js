@@ -259,6 +259,7 @@ function Certificate() {
         </Grid>
         <Grid item xs={12}>
           <Select
+            label="Fonte para o Texto"
             value={additionalTextFont}
             onChange={(e) => setAdditionalTextFont(e.target.value)}
           >
@@ -279,7 +280,11 @@ function Certificate() {
           />
         </Grid>
         <Grid item xs={12}>
-          <Select value={font} onChange={(e) => setFont(e.target.value)}>
+          <Select
+            label="Fonte para o Texto"
+            value={font}
+            onChange={(e) => setFont(e.target.value)}
+          >
             <MenuItem value="DejaVuSans">DejaVuSans</MenuItem>
             <MenuItem value="ScriptMTBold">ScriptMTBold</MenuItem>
             <MenuItem value="AlefRegular">AlefRegular</MenuItem>
