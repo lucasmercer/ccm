@@ -61,6 +61,21 @@ function Certificate() {
       case "DejaVuSans":
         fontPath = "DejaVuSans.ttf";
         break;
+      case "Fair Prosper":
+        fontPath = "Fair Prosper.ttf";
+        break;
+      case "goodvibrations-script":
+        fontPath = "goodvibrations-script.ttf";
+        break;
+      case "lucida-fax-regular":
+        fontPath = "lucida-fax-regular.ttf";
+        break;
+      case "PlayfairDisplay-Bold":
+        fontPath = "PlayfairDisplay-Bold.ttf";
+        break;
+      case "rage-italic":
+        fontPath = "rage-italic.ttf";
+        break;
       case "ScriptMTBold":
         fontPath = "script-mt-bold.ttf";
         break;
@@ -274,6 +289,15 @@ function Certificate() {
             <MenuItem value="AlefRegular">AlefRegular</MenuItem>
             <MenuItem value="TomNR">TomNR</MenuItem>
             <MenuItem value="BodoniFLF">BodoniFLF</MenuItem>
+            <MenuItem value="FairProsper">Fair Prosper</MenuItem>
+            <MenuItem value="goodvibrations-script">
+              goodvibrations-script
+            </MenuItem>
+            <MenuItem value="lucida-fax-regular">lucida-fax-regular</MenuItem>
+            <MenuItem value="PlayfairDisplay-Bold">
+              PlayfairDisplay-Bold
+            </MenuItem>
+            <MenuItem value="rage-italic">rage-italic</MenuItem>
           </Select>
         </Grid>
 
@@ -292,6 +316,15 @@ function Certificate() {
             <MenuItem value="AlefRegular">AlefRegular</MenuItem>
             <MenuItem value="TomNR">TomNR</MenuItem>
             <MenuItem value="BodoniFLF">BodoniFLF</MenuItem>
+            <MenuItem value="FairProsper">Fair Prosper</MenuItem>
+            <MenuItem value="goodvibrations-script">
+              goodvibrations-script
+            </MenuItem>
+            <MenuItem value="lucida-fax-regular">lucida-fax-regular</MenuItem>
+            <MenuItem value="PlayfairDisplay-Bold">
+              PlayfairDisplay-Bold
+            </MenuItem>
+            <MenuItem value="rage-italic">rage-italic</MenuItem>
           </Select>
         </Grid>
         <Grid item xs={12}>
