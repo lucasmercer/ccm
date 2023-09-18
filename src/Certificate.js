@@ -258,8 +258,10 @@ function Certificate() {
           />
         </Grid>
         <Grid item xs={12}>
+          <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
+            Escolha a Fonte do Texto Adicional
+          </Typography>
           <Select
-            label="Fonte para o Texto"
             value={additionalTextFont}
             onChange={(e) => setAdditionalTextFont(e.target.value)}
           >
@@ -280,11 +282,10 @@ function Certificate() {
           />
         </Grid>
         <Grid item xs={12}>
-          <Select
-            label="Fonte para o Texto"
-            value={font}
-            onChange={(e) => setFont(e.target.value)}
-          >
+          <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
+            Escolha a Fonte utilizada no nome do estudante
+          </Typography>
+          <Select value={font} onChange={(e) => setFont(e.target.value)}>
             <MenuItem value="DejaVuSans">DejaVuSans</MenuItem>
             <MenuItem value="ScriptMTBold">ScriptMTBold</MenuItem>
             <MenuItem value="AlefRegular">AlefRegular</MenuItem>
