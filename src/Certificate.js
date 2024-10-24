@@ -89,6 +89,9 @@ function Certificate() {
       case "TemplateLucas2":
         templateURL = "template4.pdf";
         break;
+      case "TemplateRafael":
+        templateURL = "template6.pdf";
+        break;
       //  adicionar mais cases quando tiver outros templates
       default:
         templateURL = "template.pdf";
@@ -308,6 +311,7 @@ function Certificate() {
             <MenuItem value="TemplateLucas2">Padrão Lucas 2</MenuItem>
             <MenuItem value="TemplateLucasDourado">Lucas Dourado</MenuItem>
             <MenuItem value="TemplateSeed">Padrão Seed</MenuItem>
+            <MenuItem value="TemplateRafael">Rafael</MenuItem>
             {/* Você pode adicionar mais templates aqui no futuro */}
           </Select>
         </Grid>
