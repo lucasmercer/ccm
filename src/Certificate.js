@@ -76,46 +76,58 @@ function Certificate() {
         fontPath = "BodoniFLF.ttf";
         break;
       case "Almarai-Regular":
-        fontPath = "fonts/Almarai-Regular.ttf";
+        fontPath = "Almarai-Regular.ttf";
         break;
       case "Corinthia-Regular":
-        fontPath = "fonts/Corinthia-Regular.ttf";
+        fontPath = "Corinthia-Regular.ttf";
         break;
       case "Sacramento-Regular":
-        fontPath = "fonts/Sacramento-Regular.ttf";
+        fontPath = "Sacramento-Regular.ttf";
         break;
       case "Astral Sisters":
-        fontPath = "fonts/AstralSisters.ttf";
+        fontPath = "AstralSisters.ttf";
         break;
       case "Hello Almeida":
-        fontPath = "fonts/HelloAlmeida.ttf";
+        fontPath = "HelloAlmeida.ttf";
         break;
       case "marguerite":
-        fontPath = "fonts/marguerite.ttf";
+        fontPath = "marguerite.ttf";
         break;
       case "Hickory Jack":
-        fontPath = "fonts/HickoryJack.ttf";
+        fontPath = "HickoryJack.ttf";
         break;
       case "Hickory Jack Light":
-        fontPath = "fonts/HickoryJackLight.ttf";
+        fontPath = "HickoryJackLight.ttf";
+        break;
+      case "LeagueScriptNumberOne":
+        fontPath = "LeagueScriptNumberOne.ttf";
         break;
       case "Maria_lucia":
-        fontPath = "fonts/Maria_lucia.ttf";
+        fontPath = "Maria_lucia.ttf";
         break;
       case "Little Days Alt":
-        fontPath = "fonts/LittleDaysAlt.ttf";
+        fontPath = "LittleDaysAlt.ttf";
         break;
       case "Little Daisy":
-        fontPath = "fonts/LittleDaisy.ttf";
+        fontPath = "LittleDaisy.ttf";
         break;
       case "Little days":
-        fontPath = "fonts/LittleDays.ttf";
+        fontPath = "LittleDays.ttf";
         break;
       default:
-        fontPath = "DejaVuSans.ttf";
+        fontPath = "DejaVuSans.ttf"; // Fonte padrão
     }
-    const fontBytes = await fetch(fontPath).then((res) => res.arrayBuffer());
-    return await pdfDoc.embedFont(fontBytes);
+
+    try {
+      const fontBytes = await fetch(fontPath).then((res) => {
+        if (!res.ok) throw new Error(`Erro ao buscar a fonte: ${fontPath}`);
+        return res.arrayBuffer();
+      });
+      return await pdfDoc.embedFont(fontBytes);
+    } catch (error) {
+      console.error("Erro ao incorporar a fonte:", error);
+      throw error; // Repropaga o erro
+    }
   };
 
   const generatePDFForStudent = async (studentName) => {
