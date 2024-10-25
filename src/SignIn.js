@@ -166,7 +166,7 @@ function SignInSide() {
                   id="email"
                   label="Endereço Email"
                   name="email"
-                  autoComplete="email"
+                  autoComplete="off"
                   autoFocus
                   value={email}
                   onChange={handleEmailChange}
