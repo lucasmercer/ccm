@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/ccm/static/css/main.e6c13ad2.css",
-    "main.js": "/ccm/static/js/main.3e500a3b.js",
+    "main.js": "/ccm/static/js/main.41fb9221.js",
     "static/js/787.9e89cdee.chunk.js": "/ccm/static/js/787.9e89cdee.chunk.js",
     "static/media/colegio_bg.png": "/ccm/static/media/colegio_bg.f035ace5eddad26a41c4.png",
     "index.html": "/ccm/index.html",
     "main.e6c13ad2.css.map": "/ccm/static/css/main.e6c13ad2.css.map",
-    "main.3e500a3b.js.map": "/ccm/static/js/main.3e500a3b.js.map",
+    "main.41fb9221.js.map": "/ccm/static/js/main.41fb9221.js.map",
     "787.9e89cdee.chunk.js.map": "/ccm/static/js/787.9e89cdee.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.3e500a3b.js"
+    "static/js/main.41fb9221.js"
   ]
 }
