@@ -88,16 +88,16 @@ function Certificate() {
         fontPath = "AstralSisters.ttf";
         break;
       case "Hello Almeida":
-        fontPath = "HelloAlmeida.ttf";
+        fontPath = "Hello Almeida.ttf";
         break;
       case "marguerite":
         fontPath = "marguerite.ttf";
         break;
       case "Hickory Jack":
-        fontPath = "HickoryJack.ttf";
+        fontPath = "Hickory Jack.ttf";
         break;
       case "Hickory Jack Light":
-        fontPath = "HickoryJackLight.ttf";
+        fontPath = "Hickory JackLight.ttf";
         break;
       case "LeagueScriptNumberOne":
         fontPath = "LeagueScriptNumberOne.ttf";
@@ -112,7 +112,7 @@ function Certificate() {
         fontPath = "LittleDaisy.ttf";
         break;
       case "Little days":
-        fontPath = "LittleDays.ttf";
+        fontPath = "Littledays.ttf";
         break;
       default:
         fontPath = "DejaVuSans.ttf"; // Fonte padrão
