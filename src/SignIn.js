@@ -50,14 +50,7 @@ function SignInSide() {
   const [suggestions, setSuggestions] = React.useState([]);
   const navigate = useNavigate();
 
-  const emailSuggestions = [
-    "@escola.pr.gov.br",
-    "@seed.pr.gov.br",
-    "@hotmail.com",
-    "@gmail.com",
-    "@outlook.com",
-    "@icloud.com",
-  ];
+  const emailSuggestions = ["@escola.pr.gov.br", "@seed.pr.gov.br"];
 
   React.useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
