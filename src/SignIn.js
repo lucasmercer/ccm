@@ -25,7 +25,15 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit">Lucas Mercer Leniar</Link>{" "}
+      <Link
+        color="inherit"
+        onClick={() => {
+          window.location.href = "https://www.instagram.com/lucasmercerl";
+        }}
+        style={{ cursor: "pointer", textDecoration: "underline" }}
+      >
+        Lucas Mercer Leniar
+      </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
