@@ -44,14 +44,6 @@ function Certificate() {
   let savedPDFBytes = null;
 
   const handleOpenModal = () => {
-    if (!names.trim()) {
-      // Verifica se o campo está vazio
-      alert(
-        "Por favor, preencha o campo 'Nomes' antes de visualizar os certificados."
-      );
-      return; // Não continue se o campo de nomes estiver vazio
-    }
-
     const firstStudent = names.split(",")[0].trim();
     setPreviewName(firstStudent);
     setOpenModal(true);
@@ -211,14 +203,6 @@ function Certificate() {
   };
 
   const handleSubmit = async (name) => {
-    if (!names.trim()) {
-      // Verifica se o campo está vazio
-      alert(
-        "Por favor, preencha o campo 'Nomes' antes de visualizar os certificados."
-      );
-      return; // Não continue se o campo de nomes estiver vazio
-    }
-
     setIsLoading(true);
     if (name) {
       savedPDFBytes = await generatePDFForStudent(name);
