@@ -13,7 +13,6 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import background from "./colegio_bg.png";
-
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 
@@ -33,8 +32,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 function SignInSide() {
@@ -42,7 +39,17 @@ function SignInSide() {
   const [senha, setSenha] = React.useState("");
   const [rememberUser, setRememberUser] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
+  const [suggestions, setSuggestions] = React.useState([]);
   const navigate = useNavigate();
+
+  const emailSuggestions = [
+    "@escola.pr.gov.br",
+    "@seed.pr.gov.br",
+    "@hotmail.com",
+    "@gmail.com",
+    "@outlook.com",
+    "@icloud.com",
+  ];
 
   React.useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
@@ -82,6 +89,31 @@ function SignInSide() {
       }, [3000]);
     }
   }, [isError]);
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    if (value.includes("@")) {
+      const domainPart = value.split("@")[1];
+      if (domainPart) {
+        const filteredSuggestions = emailSuggestions.filter((suggestion) =>
+          suggestion.startsWith("@" + domainPart)
+        );
+        setSuggestions(filteredSuggestions);
+      } else {
+        setSuggestions(emailSuggestions);
+      }
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    const localPart = email.split("@")[0];
+    setEmail(`${localPart}${suggestion}`);
+    setSuggestions([]);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -123,21 +155,54 @@ function SignInSide() {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+              sx={{ mt: 1, position: "relative" }}
             >
-              <TextField
-                error={isError}
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Endereço Email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <Box sx={{ position: "relative" }}>
+                <TextField
+                  error={isError}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Endereço Email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+                {suggestions.length > 0 && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "100%",
+                      left: 0,
+                      right: 0,
+                      maxHeight: 150,
+                      overflowY: "auto",
+                      bgcolor: "background.paper",
+                      boxShadow: 3,
+                      zIndex: 2,
+                    }}
+                  >
+                    {suggestions.map((suggestion, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          padding: 1,
+                          cursor: "pointer",
+                          "&:hover": {
+                            backgroundColor: "grey.200",
+                          },
+                        }}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                      >
+                        {suggestion}
+                      </Box>
+                    ))}
+                  </Box>
+                )}
+              </Box>
               <TextField
                 error={isError}
                 margin="normal"
@@ -145,11 +210,12 @@ function SignInSide() {
                 fullWidth
                 name="senha"
                 label="Senha"
-                type="password" // alterado de "Senha" para "password"
+                type="password"
                 id="senha"
                 autoComplete="current-password"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
+                sx={{ position: "relative", zIndex: 1 }}
               />
               <FormControlLabel
                 control={
