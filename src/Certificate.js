@@ -67,6 +67,42 @@ function Certificate() {
       case "BodoniFLF":
         fontPath = "BodoniFLF.ttf";
         break;
+      case "Almarai-Regular":
+        fontPath = "fonts/Almarai-Regular.ttf";
+        break;
+      case "Corinthia-Regular":
+        fontPath = "fonts/Corinthia-Regular.ttf";
+        break;
+      case "Sacramento-Regular":
+        fontPath = "fonts/Sacramento-Regular.ttf";
+        break;
+      case "Astral Sisters":
+        fontPath = "fonts/AstralSisters.ttf";
+        break;
+      case "Hello Almeida":
+        fontPath = "fonts/HelloAlmeida.ttf";
+        break;
+      case "marguerite":
+        fontPath = "fonts/marguerite.ttf";
+        break;
+      case "Hickory Jack":
+        fontPath = "fonts/HickoryJack.ttf";
+        break;
+      case "Hickory Jack Light":
+        fontPath = "fonts/HickoryJackLight.ttf";
+        break;
+      case "Maria_lucia":
+        fontPath = "fonts/Maria_lucia.ttf";
+        break;
+      case "Little Days Alt":
+        fontPath = "fonts/LittleDaysAlt.ttf";
+        break;
+      case "Little Daisy":
+        fontPath = "fonts/LittleDaisy.ttf";
+        break;
+      case "Little days":
+        fontPath = "fonts/LittleDays.ttf";
+        break;
       default:
         fontPath = "DejaVuSans.ttf";
     }
@@ -276,6 +312,18 @@ function Certificate() {
             <MenuItem value="AlefRegular">AlefRegular</MenuItem>
             <MenuItem value="TomNR">TomNR</MenuItem>
             <MenuItem value="BodoniFLF">BodoniFLF</MenuItem>
+            <MenuItem value="Almarai-Regular">Almarai-Regular</MenuItem>
+            <MenuItem value="Corinthia-Regular">Corinthia-Regular</MenuItem>
+            <MenuItem value="Sacramento-Regular">Sacramento-Regular</MenuItem>
+            <MenuItem value="Astral Sisters">Astral Sisters</MenuItem>
+            <MenuItem value="Hello Almeida">Hello Almeida</MenuItem>
+            <MenuItem value="marguerite">marguerite</MenuItem>
+            <MenuItem value="Hickory Jack">Hickory Jack</MenuItem>
+            <MenuItem value="Hickory Jack Light">Hickory Jack Light</MenuItem>
+            <MenuItem value="Maria_lucia">Maria_lucia</MenuItem>
+            <MenuItem value="Little Days Alt">Little Days Alt</MenuItem>
+            <MenuItem value="Little Daisy">Little Daisy</MenuItem>
+            <MenuItem value="Little days">Little days</MenuItem>
           </Select>
         </Grid>
 
@@ -297,6 +345,18 @@ function Certificate() {
             <MenuItem value="AlefRegular">AlefRegular</MenuItem>
             <MenuItem value="TomNR">TomNR</MenuItem>
             <MenuItem value="BodoniFLF">BodoniFLF</MenuItem>
+            <MenuItem value="Almarai-Regular">Almarai-Regular</MenuItem>
+            <MenuItem value="Corinthia-Regular">Corinthia-Regular</MenuItem>
+            <MenuItem value="Sacramento-Regular">Sacramento-Regular</MenuItem>
+            <MenuItem value="Astral Sisters">Astral Sisters</MenuItem>
+            <MenuItem value="Hello Almeida">Hello Almeida</MenuItem>
+            <MenuItem value="marguerite">marguerite</MenuItem>
+            <MenuItem value="Hickory Jack">Hickory Jack</MenuItem>
+            <MenuItem value="Hickory Jack Light">Hickory Jack Light</MenuItem>
+            <MenuItem value="Maria_lucia">Maria_lucia</MenuItem>
+            <MenuItem value="Little Days Alt">Little Days Alt</MenuItem>
+            <MenuItem value="Little Daisy">Little Daisy</MenuItem>
+            <MenuItem value="Little days">Little days</MenuItem>
           </Select>
         </Grid>
         <Grid item xs={12}>
