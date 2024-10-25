@@ -73,6 +73,6 @@ O deploy do projeto para o GitHub Pages é feito automaticamente usando o pacote
 
    ```json
    "scripts": {
-     "deploy": "gh-pages -d build -b feat/producao"
+     "deploy": "gh-pages -d build feat/producao"
    }
    ```
