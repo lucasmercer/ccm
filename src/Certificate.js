@@ -130,6 +130,14 @@ function Certificate() {
     }
   };
 
+  // Função para capitalizar a primeira letra de cada nome
+  const capitalizeFirstLetter = (name) => {
+    return name
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const generatePDFForStudent = async (studentName) => {
     let templateURL;
     switch (template) {
@@ -297,18 +305,22 @@ function Certificate() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <TextField
-            label="Nomes (separados por vírgula e sem espaço entre eles)"
-            fullWidth
-            value={names}
-            onChange={(e) => {
-              const sanitizedNames = e.target.value.replace(/,\s+/g, ",");
-              setNames(sanitizedNames);
-            }}
-          />
-        </Grid>
+<Grid item xs={12}>
+  <TextField
+    label="Nomes (separados por vírgula e sem espaço entre eles)"
+    fullWidth
+    value={names}
+    onChange={(e) => {
+      const sanitizedNames = e.target.value.replace(/,\s+/g, ",");
+      // Aplica a capitalização à primeira letra de cada nome
+      const capitalizedNames = sanitizedNames
+        .split(",")
+        .map((name) => capitalizeFirstLetter(name.trim()))
+        .join(", ");
+      setNames(capitalizedNames);
+    }}
+  />
+</Grid>
         <Grid item xs={12}>
           <TextField
             label="Data"
