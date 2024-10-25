@@ -32,7 +32,7 @@ Você pode [acessar o projeto inicial](https://lucasmercer.github.io/ccm/)
    Antes de iniciar o projeto, você precisa instalar as dependências:
 
    ```bash
-   npm install
+   yarn install
    ```
 
 3. **Iniciar o projeto em ambiente de desenvolvimento:**
@@ -40,7 +40,7 @@ Você pode [acessar o projeto inicial](https://lucasmercer.github.io/ccm/)
    Para iniciar o projeto localmente:
 
    ```bash
-   npm start
+   yarn start
    ```
 
    Isso abrirá o projeto em seu navegador padrão, normalmente em `http://localhost:3000`.
@@ -54,7 +54,7 @@ O deploy do projeto para o GitHub Pages é feito automaticamente usando o pacote
    Primeiro, você precisa gerar os arquivos estáticos para deploy:
 
    ```bash
-   npm run build
+   yarn build
    ```
 
 2. **Deploy para GitHub Pages:**
@@ -62,7 +62,7 @@ O deploy do projeto para o GitHub Pages é feito automaticamente usando o pacote
    Para realizar o deploy, basta rodar o seguinte comando:
 
    ```bash
-   npm run deploy
+   yarn deploy
    ```
 
    Esse comando vai compilar o projeto e fazer o push do conteúdo da pasta `build` para a branch configurada (normalmente `gh-pages` ou outra branch específica) e atualizar o site no GitHub Pages.
