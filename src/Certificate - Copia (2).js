@@ -314,12 +314,11 @@ function Certificate() {
           fullWidth
           value={names}
           onChange={(e) => {
-            const sanitizedNames = e.target.value.replace(/,\s+/g, ",").trim();
+            const sanitizedNames = e.target.value.replace(/,\s+/g, ",");
+            // Aplica a capitalização à primeira letra de cada nome
             const capitalizedNames = sanitizedNames
               .split(",")
-              .map((name) =>
-                name.split(" ").map(capitalizeFirstLetter).join(" ").trim()
-              )
+              .map((name) => capitalizeFirstLetter(name.trim()))
               .join(", ");
             setNames(capitalizedNames);
           }}
