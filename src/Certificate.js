@@ -320,7 +320,7 @@ function Certificate() {
       setNames(capitalizedNames);
     }}
   />
-</Grid>
+      </Grid>
         <Grid item xs={12}>
           <TextField
             label="Data"
