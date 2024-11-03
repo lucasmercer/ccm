@@ -314,14 +314,12 @@ function Certificate() {
           fullWidth
           value={names}
           onChange={(e) => {
-            const sanitizedNames = e.target.value.replace(/,\s+/g, ",").trim();
-            const capitalizedNames = sanitizedNames
+            // Aqui ajustamos o código para permitir espaços entre o nome e o sobrenome
+            const sanitizedNames = e.target.value
               .split(",")
-              .map((name) =>
-                name.split(" ").map(capitalizeFirstLetter).join(" ").trim()
-              )
-              .join(", ");
-            setNames(capitalizedNames);
+              .map((name) => name.trim()) // remove espaços extras ao redor de cada nome
+              .join(","); // junta os nomes com vírgula sem adicionar espaços indesejados
+            setNames(sanitizedNames);
           }}
         />
       </Grid>
