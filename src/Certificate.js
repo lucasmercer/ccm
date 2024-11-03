@@ -275,36 +275,40 @@ function Certificate() {
     setIsDownloading(false);
   };
 
-  const renderPDFPreview = async (pdfBytes) => {
-    if (isRendering) return;
+const renderPDFPreview = async (pdfBytes) => {
+  if (isRendering) return;
 
-    setIsRendering(true);
+  setIsRendering(true);
 
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+  const blob = new Blob([pdfBytes], { type: "application/pdf" });
+  const pdf = await pdfjsLib.getDocument(URL.createObjectURL(blob)).promise;
+  const page = await pdf.getPage(1);
 
-    const pdf = await pdfjsLib.getDocument(URL.createObjectURL(blob)).promise;
-    const page = await pdf.getPage(1);
+  // Defina a escala com base nas dimensões da janela do navegador
+  const viewport = page.getViewport({ scale: 1 });
+  const canvas = document.getElementById("pdf-preview");
+  const context = canvas.getContext("2d");
 
-    const scale = 1.5;
-    const viewport = page.getViewport({ scale });
+  // Calcule a escala proporcional ao tamanho da tela
+  const screenWidth = window.innerWidth;
+  const scale = screenWidth / viewport.width; // Ajuste conforme necessário
 
-    const canvas = document.getElementById("pdf-preview");
-    const context = canvas.getContext("2d");
+  const scaledViewport = page.getViewport({ scale });
 
-    // Limpe o canvas
-    context.clearRect(0, 0, canvas.width, canvas.height);
+  // Ajuste o tamanho do canvas para o novo viewport redimensionado
+  canvas.width = scaledViewport.width;
+  canvas.height = scaledViewport.height;
 
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    const renderContext = {
-      canvasContext: context,
-      viewport: viewport,
-    };
-
-    await page.render(renderContext).promise;
-    setIsRendering(false);
+  const renderContext = {
+    canvasContext: context,
+    viewport: scaledViewport,
   };
+
+  // Renderize a página no canvas
+  await page.render(renderContext).promise;
+  setIsRendering(false);
+};
+
 
   return (
     <div style={{ padding: "20px" }}>
