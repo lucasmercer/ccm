@@ -156,7 +156,7 @@ function Certificate() {
       case "TemplateRafael":
         templateURL = "template6.pdf";
         break;
-      case "TemplateLucas2":
+      case "TemplateLucas4":
         templateURL = "template7.pdf";
         break;
       //  adicionar mais cases quando tiver outros templates
