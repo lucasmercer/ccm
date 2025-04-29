@@ -22,9 +22,10 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
   process.env.PUBLIC_URL + "/pdf.worker.js";
 
 const Descricao =
-  "A Direção do Colégio Estadual Cívico-Militar Gregório Szeremeta \n" +
-  "confere ao estudante o certificado de Menção Honrosa por ter alcançado \n" +
-  "o primeiro lugar do ano turma na Prova Paraná - 1ª edição de 2023.";
+"A Direção do Colégio Estadual Cívico-Militar Gregório Szeremeta \n" +
+" confere ao estudante o presente certificado de Menção Honrosa, \n" +
+"  em reconhecimento às boas práticas, atitudes exemplares e \n" +
+"   dedicação demonstradas ao longo do trimestre.";
 
 function Certificate() {
   const [names, setNames] = useState("");
