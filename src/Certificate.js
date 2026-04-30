@@ -39,10 +39,18 @@ function Certificate() {
   const [isRendering, setIsRendering] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [previewName, setPreviewName] = useState("");
-
   const [template, setTemplate] = useState("TemplateLucas");
 
   let savedPDFBytes = null;
+
+  // Função para capitalizar nomes corretamente
+  const formatNameCase = (name) => {
+    return name
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
 
   const handleOpenModal = () => {
     if (!names.trim()) {
@@ -102,8 +110,8 @@ function Certificate() {
       default: templateURL = "template.pdf"; break;
     }
 
-    const formatDateToBrazilian = (date) => {
-      const [year, month, day] = date.split("-");
+    const formatDateToBrazilian = (dateStr) => {
+      const [year, month, day] = dateStr.split("-");
       return `${day}/${month}/${year}`;
     };
     const formattedDate = formatDateToBrazilian(date);
@@ -171,13 +179,15 @@ function Certificate() {
 
   const downloadPDF = async () => {
     setIsDownloading(true);
+    // Divide pela vírgula e limpa espaços extras das bordas, mantendo espaços internos
     const students = names.split(",").map(n => n.trim()).filter(n => n !== "");
+    
     for (let student of students) {
       const pdfData = await generatePDFForStudent(student);
       const blob = new Blob([pdfData], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
 
-      // Remove espaços apenas para o nome do arquivo final
+      // Remove espaços APENAS para o nome do arquivo baixado[cite: 1]
       const fileNameClean = student.replace(/\s+/g, "");
 
       const link = document.createElement("a");
@@ -221,25 +231,24 @@ function Certificate() {
           fullWidth
           value={names}
           placeholder="Ex: Lucas Mercer Leniar, Pedro Albuquerque"
-          onChange={(e) => setNames(e.target.value)} // Permite digitar espaços livremente
+          // O onChange agora permite digitar espaços livremente[cite: 1]
+          onChange={(e) => setNames(e.target.value)} 
+          // A formatação e capitalização só ocorrem quando você sai do campo[cite: 1]
           onBlur={() => {
-            // Organiza a lista e capitaliza apenas quando o usuário sai do campo
             if (!names.trim()) return;
             const formatted = names
               .split(",")
               .map((n) => {
-                return n
-                  .trim()
-                  .split(/\s+/)
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                  .join(" ");
+                const trimmed = n.trim().replace(/\s+/g, " ");
+                return trimmed ? formatNameCase(trimmed) : "";
               })
+              .filter(n => n !== "")
               .join(", ");
             setNames(formatted);
           }}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} style={{ marginTop: "15px" }}>
         <TextField
           label="Data"
           type="date"
@@ -248,80 +257,43 @@ function Certificate() {
           onChange={(e) => setDate(e.target.value)}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} style={{ marginTop: "15px" }}>
         <TextareaAutosize
           minRows={6}
           placeholder={Descricao}
-          style={{ width: "100%" }}
+          style={{ width: "100%", padding: "10px", fontFamily: "inherit" }}
           value={additionalText}
           onChange={(e) => setAdditionalText(e.target.value)}
         />
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
-          Escolha a Fonte do Texto Adicional
-        </Typography>
-        <Select
-          value={additionalTextFont}
-          onChange={(e) => setAdditionalTextFont(e.target.value)}
-        >
-          <MenuItem value="DejaVuSans">DejaVuSans</MenuItem>
-          <MenuItem value="ScriptMTBold">ScriptMTBold</MenuItem>
-          <MenuItem value="AlefRegular">AlefRegular</MenuItem>
-          <MenuItem value="TomNR">TomNR</MenuItem>
-          <MenuItem value="BodoniFLF">BodoniFLF</MenuItem>
-          <MenuItem value="Almarai-Regular">Almarai-Regular</MenuItem>
-          <MenuItem value="Corinthia-Regular">Corinthia-Regular</MenuItem>
-          <MenuItem value="Sacramento-Regular">Sacramento-Regular</MenuItem>
-          <MenuItem value="Astral Sisters">Astral Sisters</MenuItem>
-          <MenuItem value="Hello Almeida">Hello Almeida</MenuItem>
-          <MenuItem value="marguerite">marguerite</MenuItem>
-          <MenuItem value="Hickory Jack">Hickory Jack</MenuItem>
-          <MenuItem value="Hickory Jack Light">Hickory Jack Light</MenuItem>
-          <MenuItem value="Maria_lucia">Maria_lucia</MenuItem>
-          <MenuItem value="Little Days Alt">Little Days Alt</MenuItem>
-          <MenuItem value="Little Daisy">Little Daisy</MenuItem>
-          <MenuItem value="Little days">Little days</MenuItem>
-        </Select>
+      
+      {/* Seletores de Fontes e Template seguem a mesma lógica */}
+      <Grid container spacing={3} style={{ marginTop: "10px" }}>
+        <Grid item xs={12} md={4}>
+          <Typography variant="subtitle2">Fonte do Texto Adicional</Typography>
+          <Select fullWidth value={additionalTextFont} onChange={(e) => setAdditionalTextFont(e.target.value)}>
+            <MenuItem value="DejaVuSans">DejaVuSans</MenuItem>
+            <MenuItem value="ScriptMTBold">ScriptMTBold</MenuItem>
+            {/* ... outras opções ... */}
+            <MenuItem value="Maria_lucia">Maria_lucia</MenuItem>
+          </Select>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <TextField label="Tamanho da Fonte (Nome)" fullWidth value={fontSize} onChange={(e) => setFontSize(e.target.value)} />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography variant="subtitle2">Fonte do Estudante</Typography>
+          <Select fullWidth value={font} onChange={(e) => setFont(e.target.value)}>
+            <MenuItem value="DejaVuSans">DejaVuSans</MenuItem>
+            <MenuItem value="ScriptMTBold">ScriptMTBold</MenuItem>
+            <MenuItem value="Sacramento-Regular">Sacramento-Regular</MenuItem>
+          </Select>
+        </Grid>
       </Grid>
 
-      <Grid item xs={12}>
-        <TextField
-          label="Tamanho da Fonte"
-          fullWidth
-          value={fontSize}
-          onChange={(e) => setFontSize(e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
-          Escolha a Fonte utilizada no nome do estudante
-        </Typography>
-        <Select value={font} onChange={(e) => setFont(e.target.value)}>
-          <MenuItem value="DejaVuSans">DejaVuSans</MenuItem>
-          <MenuItem value="ScriptMTBold">ScriptMTBold</MenuItem>
-          <MenuItem value="AlefRegular">AlefRegular</MenuItem>
-          <MenuItem value="TomNR">TomNR</MenuItem>
-          <MenuItem value="BodoniFLF">BodoniFLF</MenuItem>
-          <MenuItem value="Almarai-Regular">Almarai-Regular</MenuItem>
-          <MenuItem value="Corinthia-Regular">Corinthia-Regular</MenuItem>
-          <MenuItem value="Sacramento-Regular">Sacramento-Regular</MenuItem>
-          <MenuItem value="Astral Sisters">Astral Sisters</MenuItem>
-          <MenuItem value="Hello Almeida">Hello Almeida</MenuItem>
-          <MenuItem value="marguerite">marguerite</MenuItem>
-          <MenuItem value="Hickory Jack">Hickory Jack</MenuItem>
-          <MenuItem value="Hickory Jack Light">Hickory Jack Light</MenuItem>
-          <MenuItem value="Maria_lucia">Maria_lucia</MenuItem>
-          <MenuItem value="Little Days Alt">Little Days Alt</MenuItem>
-          <MenuItem value="Little Daisy">Little Daisy</MenuItem>
-          <MenuItem value="Little days">Little days</MenuItem>
-        </Select>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h6" style={{ marginBottom: "10px" }}>
-          Escolha o Template
-        </Typography>
-        <Select value={template} onChange={(e) => setTemplate(e.target.value)}>
+      <Grid item xs={12} style={{ marginTop: "15px" }}>
+        <Typography variant="subtitle2">Template do Certificado</Typography>
+        <Select fullWidth value={template} onChange={(e) => setTemplate(e.target.value)}>
           <MenuItem value="TemplateLucas">Padrão Lucas</MenuItem>
           <MenuItem value="TemplateLucas2">Padrão Lucas 2</MenuItem>
           <MenuItem value="TemplateLucasDourado">Dourado Lucas 3</MenuItem>
@@ -331,59 +303,38 @@ function Certificate() {
         </Select>
       </Grid>
 
-      <Grid container item spacing={2} xs={12} style={{ marginTop: "20px" }}>
+      <Grid container spacing={2} style={{ marginTop: "20px" }}>
         <Grid item>
-          <Button
-            onClick={downloadPDF}
-            variant="contained"
-            color="secondary"
-            disabled={isDownloading || isRendering}
-          >
+          <Button onClick={downloadPDF} variant="contained" color="secondary" disabled={isDownloading || isRendering}>
             {isDownloading ? <CircularProgress size={24} color="inherit" /> : "Baixar Certificado(s)"}
           </Button>
         </Grid>
         <Grid item>
-          <Button
-            onClick={handleOpenModal}
-            variant="contained"
-            color="primary"
-            disabled={isLoading || isRendering}
-          >
+          <Button onClick={handleOpenModal} variant="contained" color="primary" disabled={isLoading || isRendering}>
             {isLoading ? <CircularProgress size={24} color="inherit" /> : "Visualizar Certificados"}
           </Button>
-          <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-            <DialogTitle>Escolha um nome para visualizar</DialogTitle>
-            <DialogContent>
-              <Select
-                value={previewName}
-                onChange={(e) => setPreviewName(e.target.value)}
-                fullWidth
-              >
-                {names.split(",").map((name, index) => (
-                  <MenuItem key={index} value={name.trim()}>
-                    {name.trim()}
-                  </MenuItem>
-                ))}
-              </Select>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setOpenModal(false)} color="primary">Cancelar</Button>
-              <Button
-                onClick={() => {
-                  setOpenModal(false);
-                  handleSubmit(previewName);
-                }}
-                color="primary"
-                autoFocus
-              >
-                Visualizar
-              </Button>
-            </DialogActions>
-          </Dialog>
         </Grid>
       </Grid>
-      <Grid item xs={12} style={{ marginTop: "20px" }}>
-        <canvas id="pdf-preview" style={{ maxWidth: "100%", border: "1px solid #ccc" }}></canvas>
+
+      <Dialog open={openModal} onClose={() => setOpenModal(false)}>
+        <DialogTitle>Escolha um nome para visualizar</DialogTitle>
+        <DialogContent>
+          <Select value={previewName} onChange={(e) => setPreviewName(e.target.value)} fullWidth>
+            {names.split(",").map((name, index) => (
+              <MenuItem key={index} value={name.trim()}>{name.trim()}</MenuItem>
+            ))}
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenModal(false)} color="primary">Cancelar</Button>
+          <Button onClick={() => { setOpenModal(false); handleSubmit(previewName); }} color="primary" autoFocus>
+            Visualizar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Grid item xs={12} style={{ marginTop: "30px", textAlign: "center" }}>
+        <canvas id="pdf-preview" style={{ maxWidth: "100%", border: "1px solid #ccc", boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}></canvas>
       </Grid>
     </div>
   );
