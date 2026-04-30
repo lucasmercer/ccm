@@ -43,18 +43,9 @@ function Certificate() {
 
   let savedPDFBytes = null;
 
-  // Função para capitalizar nomes corretamente
-  const formatNameCase = (name) => {
-    return name
-      .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
   const handleOpenModal = () => {
     if (!names.trim()) {
-      alert("Por favor, preencha o campo 'Nomes' antes de visualizar os certificados.");
+      alert("Por favor, preencha o campo 'Nomes' antes de visualizar.");
       return;
     }
     const firstStudent = names.split(",")[0].trim();
@@ -166,7 +157,7 @@ function Certificate() {
 
   const handleSubmit = async (name) => {
     if (!names.trim()) {
-      alert("Por favor, preencha o campo 'Nomes' antes de visualizar os certificados.");
+      alert("Por favor, preencha o campo 'Nomes'.");
       return;
     }
     setIsLoading(true);
@@ -179,26 +170,30 @@ function Certificate() {
 
   const downloadPDF = async () => {
     setIsDownloading(true);
-    // Divide pela vírgula e limpa espaços extras das bordas, mantendo espaços internos
+    // Separa por vírgula e remove apenas os espaços inúteis das pontas de cada nome[cite: 1]
     const students = names.split(",").map(n => n.trim()).filter(n => n !== "");
     
     for (let student of students) {
-      const pdfData = await generatePDFForStudent(student);
+      // Capitaliza o nome para o PDF (ex: lucas vira Lucas)[cite: 1]
+      const capitalizedStudent = student
+        .split(" ")
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(" ");
+
+      const pdfData = await generatePDFForStudent(capitalizedStudent);
       const blob = new Blob([pdfData], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
 
-      // Remove espaços APENAS para o nome do arquivo baixado[cite: 1]
-      const fileNameClean = student.replace(/\s+/g, "");
+      // Nome do arquivo sem espaços para evitar erro de sistema[cite: 1]
+      const fileNameClean = capitalizedStudent.replace(/\s+/g, "");
 
       const link = document.createElement("a");
       link.href = url;
       link.download = `certificado_${fileNameClean}.pdf`;
-
       document.body.appendChild(link);
       link.click();
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      await new Promise((resolve) => setTimeout(resolve, 800));
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     }
@@ -211,7 +206,7 @@ function Certificate() {
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const pdf = await pdfjsLib.getDocument(URL.createObjectURL(blob)).promise;
     const page = await pdf.getPage(1);
-    const scale = 1.5;
+    const scale = 1.3;
     const viewport = page.getViewport({ scale });
     const canvas = document.getElementById("pdf-preview");
     const context = canvas.getContext("2d");
@@ -224,100 +219,74 @@ function Certificate() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Grid item xs={12}>
-        <TextField
-          label="Nomes (separe cada nome por vírgula)"
-          fullWidth
-          value={names}
-          placeholder="Ex: Lucas Mercer Leniar, Pedro Albuquerque"
-          // O onChange agora permite digitar espaços livremente[cite: 1]
-          onChange={(e) => setNames(e.target.value)} 
-          // A formatação e capitalização só ocorrem quando você sai do campo[cite: 1]
-          onBlur={() => {
-            if (!names.trim()) return;
-            const formatted = names
-              .split(",")
-              .map((n) => {
-                const trimmed = n.trim().replace(/\s+/g, " ");
-                return trimmed ? formatNameCase(trimmed) : "";
-              })
-              .filter(n => n !== "")
-              .join(", ");
-            setNames(formatted);
-          }}
-        />
-      </Grid>
-      <Grid item xs={12} style={{ marginTop: "15px" }}>
-        <TextField
-          label="Data"
-          type="date"
-          fullWidth
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-      </Grid>
-      <Grid item xs={12} style={{ marginTop: "15px" }}>
-        <TextareaAutosize
-          minRows={6}
-          placeholder={Descricao}
-          style={{ width: "100%", padding: "10px", fontFamily: "inherit" }}
-          value={additionalText}
-          onChange={(e) => setAdditionalText(e.target.value)}
-        />
-      </Grid>
+    <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
+      <Typography variant="h5" style={{ marginBottom: "20px" }}>Gerador de Certificados CCM</Typography>
       
-      {/* Seletores de Fontes e Template seguem a mesma lógica */}
-      <Grid container spacing={3} style={{ marginTop: "10px" }}>
-        <Grid item xs={12} md={4}>
-          <Typography variant="subtitle2">Fonte do Texto Adicional</Typography>
-          <Select fullWidth value={additionalTextFont} onChange={(e) => setAdditionalTextFont(e.target.value)}>
-            <MenuItem value="DejaVuSans">DejaVuSans</MenuItem>
-            <MenuItem value="ScriptMTBold">ScriptMTBold</MenuItem>
-            {/* ... outras opções ... */}
-            <MenuItem value="Maria_lucia">Maria_lucia</MenuItem>
-          </Select>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <TextField
+            label="Nomes (Ex: Lucas Mercer Leniar, Pedro Albuquerque)"
+            fullWidth
+            variant="outlined"
+            value={names}
+            // MANTÉM O TEXTO EXATAMENTE COMO O USUÁRIO DIGITA[cite: 1]
+            onChange={(e) => setNames(e.target.value)} 
+          />
+          <Typography variant="caption" color="textSecondary">
+            Digite o nome completo. Use vírgula para separar vários alunos.
+          </Typography>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <TextField label="Tamanho da Fonte (Nome)" fullWidth value={fontSize} onChange={(e) => setFontSize(e.target.value)} />
+
+        <Grid item xs={12} sm={6}>
+          <TextField label="Data" type="date" fullWidth variant="outlined" value={date} onChange={(e) => setDate(e.target.value)} />
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Typography variant="subtitle2">Fonte do Estudante</Typography>
-          <Select fullWidth value={font} onChange={(e) => setFont(e.target.value)}>
+
+        <Grid item xs={12} sm={6}>
+          <TextField label="Tamanho da Fonte" fullWidth variant="outlined" value={fontSize} onChange={(e) => setFontSize(e.target.value)} />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextareaAutosize
+            minRows={4}
+            placeholder="Texto do certificado..."
+            style={{ width: "100%", padding: "12px", borderRadius: "4px", borderColor: "#ccc" }}
+            value={additionalText}
+            onChange={(e) => setAdditionalText(e.target.value)}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Typography variant="subtitle2">Fonte do Nome</Typography>
+          <Select fullWidth variant="outlined" value={font} onChange={(e) => setFont(e.target.value)}>
             <MenuItem value="DejaVuSans">DejaVuSans</MenuItem>
             <MenuItem value="ScriptMTBold">ScriptMTBold</MenuItem>
             <MenuItem value="Sacramento-Regular">Sacramento-Regular</MenuItem>
           </Select>
         </Grid>
-      </Grid>
 
-      <Grid item xs={12} style={{ marginTop: "15px" }}>
-        <Typography variant="subtitle2">Template do Certificado</Typography>
-        <Select fullWidth value={template} onChange={(e) => setTemplate(e.target.value)}>
-          <MenuItem value="TemplateLucas">Padrão Lucas</MenuItem>
-          <MenuItem value="TemplateLucas2">Padrão Lucas 2</MenuItem>
-          <MenuItem value="TemplateLucasDourado">Dourado Lucas 3</MenuItem>
-          <MenuItem value="TemplateLucas4">Padrão Lucas 4</MenuItem>
-          <MenuItem value="TemplateSeed">Padrão Seed</MenuItem>
-          <MenuItem value="TemplateRafael">Padrão Rafael</MenuItem>
-        </Select>
-      </Grid>
-
-      <Grid container spacing={2} style={{ marginTop: "20px" }}>
-        <Grid item>
-          <Button onClick={downloadPDF} variant="contained" color="secondary" disabled={isDownloading || isRendering}>
-            {isDownloading ? <CircularProgress size={24} color="inherit" /> : "Baixar Certificado(s)"}
-          </Button>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="subtitle2">Template</Typography>
+          <Select fullWidth variant="outlined" value={template} onChange={(e) => setTemplate(e.target.value)}>
+            <MenuItem value="TemplateLucas">Padrão Lucas</MenuItem>
+            <MenuItem value="TemplateLucas2">Padrão Lucas 2</MenuItem>
+            <MenuItem value="TemplateLucasDourado">Dourado Lucas 3</MenuItem>
+            <MenuItem value="TemplateSeed">Padrão Seed</MenuItem>
+          </Select>
         </Grid>
-        <Grid item>
-          <Button onClick={handleOpenModal} variant="contained" color="primary" disabled={isLoading || isRendering}>
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : "Visualizar Certificados"}
+
+        <Grid item xs={12}>
+          <Button onClick={downloadPDF} variant="contained" color="secondary" style={{ marginRight: "10px" }} disabled={isDownloading}>
+            {isDownloading ? <CircularProgress size={24} /> : "Baixar Tudo"}
+          </Button>
+          
+          <Button onClick={handleOpenModal} variant="contained" color="primary">
+            Visualizar Primeiro
           </Button>
         </Grid>
       </Grid>
 
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-        <DialogTitle>Escolha um nome para visualizar</DialogTitle>
+        <DialogTitle>Visualizar Certificado</DialogTitle>
         <DialogContent>
           <Select value={previewName} onChange={(e) => setPreviewName(e.target.value)} fullWidth>
             {names.split(",").map((name, index) => (
@@ -326,16 +295,14 @@ function Certificate() {
           </Select>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenModal(false)} color="primary">Cancelar</Button>
-          <Button onClick={() => { setOpenModal(false); handleSubmit(previewName); }} color="primary" autoFocus>
-            Visualizar
-          </Button>
+          <Button onClick={() => setOpenModal(false)}>Fechar</Button>
+          <Button onClick={() => { setOpenModal(false); handleSubmit(previewName); }} color="primary">Ver</Button>
         </DialogActions>
       </Dialog>
 
-      <Grid item xs={12} style={{ marginTop: "30px", textAlign: "center" }}>
-        <canvas id="pdf-preview" style={{ maxWidth: "100%", border: "1px solid #ccc", boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}></canvas>
-      </Grid>
+      <div style={{ marginTop: "30px", textAlign: "center" }}>
+        <canvas id="pdf-preview" style={{ maxWidth: "100%", border: "1px solid #ddd" }}></canvas>
+      </div>
     </div>
   );
 }
