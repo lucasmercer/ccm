@@ -170,22 +170,22 @@ function Certificate() {
 
   const downloadPDF = async () => {
     setIsDownloading(true);
-    // Separa por vírgula e remove apenas os espaços inúteis das pontas de cada nome[cite: 1]
+    // Divide pela vírgula e limpa apenas espaços das pontas, mantendo espaços entre nomes[cite: 1]
     const students = names.split(",").map(n => n.trim()).filter(n => n !== "");
     
     for (let student of students) {
-      // Capitaliza o nome para o PDF (ex: lucas vira Lucas)[cite: 1]
-      const capitalizedStudent = student
-        .split(" ")
+      // Capitalização automática apenas para o conteúdo do PDF[cite: 1]
+      const capitalizedName = student
+        .split(/\s+/)
         .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
         .join(" ");
 
-      const pdfData = await generatePDFForStudent(capitalizedStudent);
+      const pdfData = await generatePDFForStudent(capitalizedName);
       const blob = new Blob([pdfData], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
 
-      // Nome do arquivo sem espaços para evitar erro de sistema[cite: 1]
-      const fileNameClean = capitalizedStudent.replace(/\s+/g, "");
+      // Nome do arquivo PDF limpo (sem espaços)[cite: 1]
+      const fileNameClean = capitalizedName.replace(/\s+/g, "");
 
       const link = document.createElement("a");
       link.href = url;
@@ -229,12 +229,9 @@ function Certificate() {
             fullWidth
             variant="outlined"
             value={names}
-            // MANTÉM O TEXTO EXATAMENTE COMO O USUÁRIO DIGITA[cite: 1]
+            // Permite digitar livremente sem travar espaços[cite: 1]
             onChange={(e) => setNames(e.target.value)} 
           />
-          <Typography variant="caption" color="textSecondary">
-            Digite o nome completo. Use vírgula para separar vários alunos.
-          </Typography>
         </Grid>
 
         <Grid item xs={12} sm={6}>
@@ -249,7 +246,7 @@ function Certificate() {
           <TextareaAutosize
             minRows={4}
             placeholder="Texto do certificado..."
-            style={{ width: "100%", padding: "12px", borderRadius: "4px", borderColor: "#ccc" }}
+            style={{ width: "100%", padding: "12px", borderRadius: "4px", borderColor: "#ccc", fontFamily: "Roboto, sans-serif" }}
             value={additionalText}
             onChange={(e) => setAdditionalText(e.target.value)}
           />
@@ -275,11 +272,11 @@ function Certificate() {
         </Grid>
 
         <Grid item xs={12}>
-          <Button onClick={downloadPDF} variant="contained" color="secondary" style={{ marginRight: "10px" }} disabled={isDownloading}>
-            {isDownloading ? <CircularProgress size={24} /> : "Baixar Tudo"}
+          <Button onClick={downloadPDF} variant="contained" color="secondary" style={{ marginRight: "10px" }} disabled={isDownloading || isRendering}>
+            {isDownloading ? <CircularProgress size={24} color="inherit" /> : "Baixar Tudo"}
           </Button>
           
-          <Button onClick={handleOpenModal} variant="contained" color="primary">
+          <Button onClick={handleOpenModal} variant="contained" color="primary" disabled={isRendering}>
             Visualizar Primeiro
           </Button>
         </Grid>
@@ -301,7 +298,7 @@ function Certificate() {
       </Dialog>
 
       <div style={{ marginTop: "30px", textAlign: "center" }}>
-        <canvas id="pdf-preview" style={{ maxWidth: "100%", border: "1px solid #ddd" }}></canvas>
+        <canvas id="pdf-preview" style={{ maxWidth: "100%", border: "1px solid #ddd", borderRadius: "8px" }}></canvas>
       </div>
     </div>
   );
